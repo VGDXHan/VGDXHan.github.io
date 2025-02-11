@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>仿射变换 | XHan</title><meta name="author" content="XHan"><meta name="copyright" content="XHan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一般表达式：  \mathbf{p’} &#x3D; A \cdot \mathbf{p}展开后：  \begin{bmatrix} x&#39; \\ y&#39; \\ 1 \end{bmatrix} &#x3D; \begin{bmatrix} R_{00} &amp; R_{01} &amp; T_x \\ R_{10} &amp; R_{11} &amp; T_y \\ 0 &amp; 0 &amp; 1 \end{bmatrix} \begin{bmatrix} x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="仿射变换">
+<meta property="og:url" content="http://example.com/2025/02/11/%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/index.html">
+<meta property="og:site_name" content="XHan">
+<meta property="og:description" content="一般表达式：  \mathbf{p’} &#x3D; A \cdot \mathbf{p}展开后：  \begin{bmatrix} x&#39; \\ y&#39; \\ 1 \end{bmatrix} &#x3D; \begin{bmatrix} R_{00} &amp; R_{01} &amp; T_x \\ R_{10} &amp; R_{11} &amp; T_y \\ 0 &amp; 0 &amp; 1 \end{bmatrix} \begin{bmatrix} x">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/icon.jpg">
+<meta property="article:published_time" content="2025-02-11T10:59:07.000Z">
+<meta property="article:modified_time" content="2025-02-11T14:04:06.325Z">
+<meta property="article:author" content="XHan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/icon.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "仿射变换",
+  "url": "http://example.com/2025/02/11/%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/",
+  "image": "http://example.com/img/icon.jpg",
+  "datePublished": "2025-02-11T10:59:07.000Z",
+  "dateModified": "2025-02-11T14:04:06.325Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "XHan",
+      "url": "http://xhan53373752.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/icon.jpg"><link rel="canonical" href="http://example.com/2025/02/11/%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+          
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":200,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '仿射变换',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/winter_house.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">XHan</span></a><a class="nav-page-title" href="/"><span class="site-name">仿射变换</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">仿射变换</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-11T10:59:07.000Z" title="发表于 2025-02-11 18:59:07">2025-02-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-11T14:04:06.325Z" title="更新于 2025-02-11 22:04:06">2025-02-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>一般表达式：</p>
+<script type="math/tex; mode=display">
+\mathbf{p’} = A \cdot \mathbf{p}</script><p>展开后：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+x' \\
+y' \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+R_{00} & R_{01} & T_x \\
+R_{10} & R_{11} & T_y \\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y \\
+1
+\end{bmatrix}</script><p>仿射变换包括了以下变换及其组合：</p>
+<ul>
+<li>平移</li>
+<li>旋转</li>
+<li>反射</li>
+<li>缩放</li>
+<li>错切</li>
+</ul>
+<h1 id="1-平移变换"><a href="#1-平移变换" class="headerlink" title="1 平移变换"></a>1 平移变换</h1><p>每个坐标都平移一定距离</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\left\{
+\begin{aligned}
+x' &= x + T_x \\
+y' &= y + T_y
+\end{aligned}
+\right.
+\end{equation}</script><p>所以</p>
+<script type="math/tex; mode=display">
+A = \begin{bmatrix}
+1 & 0 & T_x \\
+0 & 1 & T_y \\
+0 & 0 & 1
+\end{bmatrix}</script><h1 id="2-旋转变换"><a href="#2-旋转变换" class="headerlink" title="2 旋转变换"></a>2 旋转变换</h1><p>每个坐标绕着旋转中心旋转一定角度</p>
+<p><img src="image-20250211190107977.png" alt="image-20250211190107977"></p>
+<p>原点位于左下角，p 顺时针旋转 $\theta$ 到了 p’</p>
+<p>由图容易列出这五个方程：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+x_1^2 + y_1^2 &= x_2^2 + y_2^2, \\
+x_1 &= r \cos(\theta + \phi), \\
+y_1 &= r \sin(\theta + \phi), \\
+x_2 &= r \cos(\phi), \\
+y_2 &= r \sin(\phi).
+\end{align*}</script><p>求解得到：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+x_2 &= x_1 \cos\theta + y_1 \sin\theta, \\
+y_2 &= x_1 (-\sin\theta) + y_1 \cos\theta.
+\end{align*}</script><p>所以变换矩阵应该为：</p>
+<script type="math/tex; mode=display">
+A = \begin{bmatrix}
+\cos\theta & \sin\theta & 0 \\
+-\sin\theta & \cos\theta & 0 \\
+0 & 0 & 1
+\end{bmatrix}</script><p>下列 matlab 代码展示了向量 (0, 1) 顺时针旋转 45°（蓝色-&gt;红色） 的过程：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="built_in">zeros</span>(<span class="number">1</span>, <span class="number">100</span>);</span><br><span class="line">y = <span class="number">0</span>: <span class="number">0.01</span>: (<span class="number">100</span><span class="number">-1</span>)*<span class="number">0.01</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">figure</span></span><br><span class="line"><span class="built_in">plot</span>(x, y)  </span><br><span class="line">grid on</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"></span><br><span class="line">theta = <span class="built_in">pi</span> / <span class="number">4</span>;</span><br><span class="line">A = [<span class="built_in">cos</span>(theta)  <span class="built_in">sin</span>(theta)     <span class="number">0</span>;</span><br><span class="line">   -<span class="built_in">sin</span>(theta)   <span class="built_in">cos</span>(theta)     <span class="number">0</span>;</span><br><span class="line">       <span class="number">0</span>            <span class="number">0</span>           <span class="number">1</span>];</span><br><span class="line">p = [x;  </span><br><span class="line">	y; </span><br><span class="line">	<span class="built_in">ones</span>(<span class="number">1</span>, <span class="number">100</span>)];</span><br><span class="line"></span><br><span class="line">p_ = A * p;</span><br><span class="line"><span class="built_in">plot</span>(p_(<span class="number">1</span>, :), p_(<span class="number">2</span>, :));</span><br><span class="line"><span class="built_in">hold</span> off</span><br></pre></td></tr></table></figure>
+<p><img src="image-20250211190203590.png" alt="image-20250211190203590"></p>
+<p>这只是原点位于左下角，顺时针旋转的情况，而原点位于左上角、逆时针旋转等情况又有所不同，总结如下表</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>原点位置</th>
+<th>旋转方向</th>
+<th>旋转矩阵形式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>左上角</td>
+<td>顺时针</td>
+<td>$\begin{bmatrix} \cos(\theta) &amp; \sin(\theta) \\ -\sin(\theta) &amp; \cos(\theta) \end{bmatrix}$</td>
+</tr>
+<tr>
+<td>左上角</td>
+<td>逆时针</td>
+<td>$\begin{bmatrix} \cos(\theta) &amp; -\sin(\theta) \\ \sin(\theta) &amp; \cos(\theta) \end{bmatrix}$</td>
+</tr>
+<tr>
+<td>左下角</td>
+<td>顺时针</td>
+<td>$\begin{bmatrix} \cos(\theta) &amp; -\sin(\theta) \\ \sin(\theta) &amp; \cos(\theta) \end{bmatrix}$</td>
+</tr>
+<tr>
+<td>左下角</td>
+<td>逆时针</td>
+<td>$\begin{bmatrix} \cos(\theta) &amp; \sin(\theta) \\ -\sin(\theta) &amp; \cos(\theta) \end{bmatrix}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>可以看到，以左上角+顺时针旋转的情况为基准，原点位置和旋转方向改变时都要同时改变矩阵中所有 sin 的符号</p>
+<h1 id="3-反射变换"><a href="#3-反射变换" class="headerlink" title="3 反射变换"></a>3 反射变换</h1><p>可以理解为分别关于x轴、y轴、原点对称</p>
+<p>我们知道乘以一个单位阵不改变原向量</p>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><p>如果关于 x 轴对称，则对 y 取反：</p>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+1 & 0 & 0 \\
+0 & -1 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><p>同理，关于 y 轴对称，则对 x 取反：</p>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+-1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><p>关于原点对称，则对 x, y 都取反：</p>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+-1 & 0 & 0 \\
+0 & -1 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><h1 id="4-缩放变换"><a href="#4-缩放变换" class="headerlink" title="4 缩放变换"></a>4 缩放变换</h1><p>缩放就是给坐标乘个系数</p>
+<script type="math/tex; mode=display">
+\begin{equation}
+\left\{
+\begin{aligned}
+x' &= Wx \\
+y' &= Hy
+\end{aligned}
+\right.
+\end{equation}</script><p>所以：</p>
+<script type="math/tex; mode=display">
+A = \begin{bmatrix}
+W & 0 & 0 \\
+0 & H & 0 \\
+0 & 0 & 1
+\end{bmatrix}</script><h1 id="5-错切变换"><a href="#5-错切变换" class="headerlink" title="5 错切变换"></a>5 错切变换</h1><p>错切是沿着某个轴进行缩放</p>
+<p>还是从单位阵出发进行改造：</p>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><p>水平错切是沿着 x 方向缩放，保持 y 坐标不变。因此 A 的第二行不用动，第一行需要加入个缩放因子 a：</p>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+1 & a & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><p>垂直错切则是改变第二行：</p>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+1 & 0 & 0 \\
+a & 1 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix}</script><h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6 总结"></a>6 总结</h1><p>下面借一张 <a target="_blank" rel="noopener" href="https://blog.csdn.net/u011681952/article/details/98942207">https://blog.csdn.net/u011681952/article/details/98942207</a> 中的图总结一下仿射变换</p>
+<p><img src="image-20250211190424457.png" alt="image-20250211190424457"></p>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+R_{00} & R_{01} & T_x \\
+R_{10} & R_{11} & T_y \\
+0 & 0 & 1
+\end{bmatrix}</script><p>但实际用的时候一般保留体现仿射变换性质的上面 2x3 部分作为仿射矩阵：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+R_{00} & R_{01} & T_x \\
+R_{10} & R_{11} & T_y 
+\end{bmatrix}</script></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="http://xhan53373752.com/">XHan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/02/11/%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/">http://example.com/2025/02/11/%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">XHan</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/icon.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/02/09/HAL%E5%BA%93-%E7%BC%96%E7%A0%81%E5%99%A8%E9%85%8D%E7%BD%AE/" title="HAL库 编码器配置"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">HAL库 编码器配置</div></div><div class="info-2"><div class="info-item-1">1 基本配置烧录选择串行：  选择时钟  设置时钟频率  重设系统滴答定时器中断优先级  设置文件名和选择 IDE  设置只拷贝需要的库和创建独立. c 和. h 文件  建立工程并打开后在 Debug &gt;&gt; Settings 中勾选 Reset and Run 2 编码器配置 选择编码器模式，并配置定时器的分频系数和周期    配置编码器模式为 TI 1 和 TI 2 模式，检测边沿为两个 rising     在主函数中开启编码器  12HAL_TIM_Encoder_Start(&amp;htim3,TIM_CHANNEL_ALL);HAL_TIM_Encoder_Start(&amp;htim4,TIM_CHANNEL_ALL);  编码器读取函数  1234567void readEncoder(int speed[])&#123;	speed[0] = -(short)__HAL_TIM_GET_COUNTER(&amp;htim4);	speed[1] =...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%B9%B3%E7%A7%BB%E5%8F%98%E6%8D%A2"><span class="toc-text">1 平移变换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%97%8B%E8%BD%AC%E5%8F%98%E6%8D%A2"><span class="toc-text">2 旋转变换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8F%8D%E5%B0%84%E5%8F%98%E6%8D%A2"><span class="toc-text">3 反射变换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BC%A9%E6%94%BE%E5%8F%98%E6%8D%A2"><span class="toc-text">4 缩放变换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E9%94%99%E5%88%87%E5%8F%98%E6%8D%A2"><span class="toc-text">5 错切变换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-text">6 总结</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(/img/winter_house.png);"><div id="footer-wrap"><div class="copyright">&copy;2025 By XHan</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
