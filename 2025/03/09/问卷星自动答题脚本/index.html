@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>问卷星自动答题脚本 | XHan</title><meta name="author" content="XHan"><meta name="copyright" content="XHan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="项目链接：https:&#x2F;&#x2F;github.com&#x2F;VGDXHan&#x2F;Automatic-Questionnaire_Script_With_DeepSeek 1 方法 1：基于逻辑判断 优点：可以得到满分答案 局限：只适用单选题且题目不从题库随机抽取（否则状态空间很大，很难收敛）  1.1 网页交互部分通过 playwright 与网页交互、获取网页上的数据  安装1234conda config -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="问卷星自动答题脚本">
+<meta property="og:url" content="http://example.com/2025/03/09/%E9%97%AE%E5%8D%B7%E6%98%9F%E8%87%AA%E5%8A%A8%E7%AD%94%E9%A2%98%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="XHan">
+<meta property="og:description" content="项目链接：https:&#x2F;&#x2F;github.com&#x2F;VGDXHan&#x2F;Automatic-Questionnaire_Script_With_DeepSeek 1 方法 1：基于逻辑判断 优点：可以得到满分答案 局限：只适用单选题且题目不从题库随机抽取（否则状态空间很大，很难收敛）  1.1 网页交互部分通过 playwright 与网页交互、获取网页上的数据  安装1234conda config -">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/icon.jpg">
+<meta property="article:published_time" content="2025-03-09T09:33:15.000Z">
+<meta property="article:modified_time" content="2025-03-09T09:39:55.293Z">
+<meta property="article:author" content="XHan">
+<meta property="article:tag" content="项目">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/icon.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "问卷星自动答题脚本",
+  "url": "http://example.com/2025/03/09/%E9%97%AE%E5%8D%B7%E6%98%9F%E8%87%AA%E5%8A%A8%E7%AD%94%E9%A2%98%E8%84%9A%E6%9C%AC/",
+  "image": "http://example.com/img/icon.jpg",
+  "datePublished": "2025-03-09T09:33:15.000Z",
+  "dateModified": "2025-03-09T09:39:55.293Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "XHan",
+      "url": "http://xhan53373752.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/icon.jpg"><link rel="canonical" href="http://example.com/2025/03/09/%E9%97%AE%E5%8D%B7%E6%98%9F%E8%87%AA%E5%8A%A8%E7%AD%94%E9%A2%98%E8%84%9A%E6%9C%AC/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+          
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":200,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '问卷星自动答题脚本',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/winter_house.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">XHan</span></a><a class="nav-page-title" href="/"><span class="site-name">问卷星自动答题脚本</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">问卷星自动答题脚本</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-09T09:33:15.000Z" title="发表于 2025-03-09 17:33:15">2025-03-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-09T09:39:55.293Z" title="更新于 2025-03-09 17:39:55">2025-03-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>项目链接：<a target="_blank" rel="noopener" href="https://github.com/VGDXHan/Automatic-Questionnaire_Script_With_DeepSeek">https://github.com/VGDXHan/Automatic-Questionnaire_Script_With_DeepSeek</a></p>
+<h1 id="1-方法-1：基于逻辑判断"><a href="#1-方法-1：基于逻辑判断" class="headerlink" title="1 方法 1：基于逻辑判断"></a>1 方法 1：基于逻辑判断</h1><ul>
+<li>优点：可以得到满分答案</li>
+<li>局限：只适用单选题且题目不从题库随机抽取（否则状态空间很大，很难收敛）</li>
+</ul>
+<h2 id="1-1-网页交互部分"><a href="#1-1-网页交互部分" class="headerlink" title="1.1 网页交互部分"></a>1.1 网页交互部分</h2><p>通过 playwright 与网页交互、获取网页上的数据 </p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels conda-forge</span><br><span class="line">conda config --add channels microsoft</span><br><span class="line">conda install playwright</span><br><span class="line">playwright install  </span><br></pre></td></tr></table></figure>
+<h3 id="同步模式与异步模式的区别"><a href="#同步模式与异步模式的区别" class="headerlink" title="同步模式与异步模式的区别"></a>同步模式与异步模式的区别</h3><ul>
+<li>同步模式：依赖多线程（资源开销大），基于线程阻塞，每一步操作等待完成后再继续执行</li>
+<li>异步模式：单线程高效处理多任务（协程切换成本低），基于协程，非阻塞执行</li>
+</ul>
+<h3 id="同步模式使用方法"><a href="#同步模式使用方法" class="headerlink" title="同步模式使用方法"></a>同步模式使用方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> playwright.sync_api <span class="keyword">import</span> sync_playwright</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">open_questionaire</span>(<span class="params">self, url: <span class="built_in">str</span> = <span class="string">&#x27;http://www.baidu.com&#x27;</span></span>):</span><br><span class="line">	<span class="keyword">with</span> sync_playwright() <span class="keyword">as</span> p:</span><br><span class="line">		browser = p.chromium.launch(headless=<span class="literal">False</span>)</span><br><span class="line">		page = browser.new_page()</span><br><span class="line">		page.goto(url)</span><br><span class="line">		<span class="built_in">print</span>(<span class="string">&quot;成功打开问卷: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(page.title()))</span><br><span class="line">		...</span><br><span class="line">		...</span><br><span class="line">		browser.close()</span><br></pre></td></tr></table></figure>
+<p>headless=False 意味着展示浏览器操作，调试完毕后可以将其设置为 true 提高运行效率</p>
+<h4 id="提取页面元素"><a href="#提取页面元素" class="headerlink" title="提取页面元素"></a>提取页面元素</h4><p>核心是使用 locator 方法</p>
+<p>该方法针对 page 对象使用，传入 selector 参数</p>
+<p>可在网页上根据如下方法获取 selector：</p>
+<ol>
+<li>按 F12</li>
+<li>上方选择栏中 Elements</li>
+<li>找到需要的元素，右键&gt;Copy&gt;Copy Selector</li>
+<li>以 str 形式粘贴到 locator 的参数中</li>
+</ol>
+<p><img src="image-20250309173711561.png" alt="image-20250309173711561"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">extract_qa</span>(<span class="params">self, page</span>):</span><br><span class="line">	question_locator = page.locator(<span class="string">&#x27;#div1 &gt; div.field-label &gt; div.topichtml&#x27;</span>)</span><br><span class="line">	question = question_locator.inner_text()</span><br><span class="line">	answer_locator = page.locator(<span class="string">&#x27;#div1 &gt; div.ui-controlgroup.column1&#x27;</span>)</span><br><span class="line">	answer = answer_locator.all_inner_texts()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> question, answer[<span class="number">0</span>].split(<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>对 page. locator 返回的对象使用 inner_text 或 all_inner_texts 方法获得 selector 对应元素的文本内容</p>
+<h4 id="点击选项"><a href="#点击选项" class="headerlink" title="点击选项"></a>点击选项</h4><p><img src="image-20250309173730712.png" alt="image-20250309173730712"></p>
+<p>对 page. locator 返回的对象调用 click 方法进行点击操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.locator(<span class="string">&quot;#div1 &gt; div.ui-controlgroup.column1 &gt; div:nth-child(1)&quot;</span>).click()</span><br></pre></td></tr></table></figure>
+<h4 id="按钮验证"><a href="#按钮验证" class="headerlink" title="按钮验证"></a>按钮验证</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> page.locator(<span class="variable language_">self</span>.valid_button_selector).count() &gt; <span class="number">0</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;进行智能验证&quot;</span>)</span><br><span class="line">	page.locator(<span class="variable language_">self</span>.valid_button_selector).click()</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;验证成功&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>valid_button_selector 存储着验证按钮对应的 selector 值，对 page. locator 返回的对象调用 count 方法返回 selector 对应元素的数量，如果网页中这个元素的数量大于 0（即该页面存在该元素），则定位到该按钮进行点击</p>
+<h2 id="1-2-求解部分"><a href="#1-2-求解部分" class="headerlink" title="1.2 求解部分"></a>1.2 求解部分</h2><p>判断逻辑如图：</p>
+<p><img src="image-20250309173944271.png" alt="image-20250309173944271"></p>
+<h1 id="2-方法-2：基于-deepseek"><a href="#2-方法-2：基于-deepseek" class="headerlink" title="2 方法 2：基于 deepseek"></a>2 方法 2：基于 deepseek</h1><ul>
+<li>优点：适用所有题型</li>
+<li>局限：无法获得满分</li>
+</ul>
+<p>网页交互部分与方法 1 一致，不赘述</p>
+<p>求解部分使用 deepseek 实现</p>
+<p>Deepseek api 的使用方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">client = OpenAI(api_key=<span class="variable language_">self</span>.params.api_key, base_url=<span class="variable language_">self</span>.params.base_url)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    content = <span class="string">&quot;要给deepseek发送的文本&quot;</span></span><br><span class="line">    response = client.chat.completions.create(</span><br><span class="line">        model=<span class="string">&quot;deepseek-chat&quot;</span>,</span><br><span class="line">        messages=[</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;用于设置系统角色的文本&quot;</span>&#125;,</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: content&#125;,</span><br><span class="line">        ],</span><br><span class="line">        stream=<span class="literal">False</span></span><br><span class="line">    )</span><br><span class="line">    answer = response.choices[<span class="number">0</span>].message.content <span class="comment"># 得到答案</span></span><br><span class="line"><span class="keyword">except</span> json.JSONDecodeError <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;服务器繁忙&quot;</span>)</span><br><span class="line">    exit(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;其他错误&quot;</span>)</span><br><span class="line">    exit(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>通过提示词设置让 Deepseek 生成指定格式的答案，在再后面的程序进行解析与选择即可</p>
+<p>我给的提示词是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">我上面向你提供的是一个问卷的提取文本，不同题目间用换行符进行了间隔，你必须严格按照下列要求作答\</span><br><span class="line">        作答规则:\</span><br><span class="line">        1. 题目无论单选多选还是判断,都以数字形式作答，数字为选项的序号(如一题的答案选项为BCDA,则B对应序号1,A对应序号4)\</span><br><span class="line">        2. 只有题干中出现多选题字样的题目（如“王某夫妇收到陌生人电话，称有一款理财产品回报率高，便去银行汇款，银行工作人员怕其上当阻止，王某夫妇应该怎么办?【多选题】”）才按照多选题处理,多个序号间用空格隔开\</span><br><span class="line">        3. 判断题答题规则与单选题一致，也按照序号回答，跟对错字样无关\</span><br><span class="line">        4. 不同题目的答案之间要用\n隔开\</span><br><span class="line">        5. 答案行数应该与题目数量一致&quot;</span><br></pre></td></tr></table></figure>
+<p>读取答案部分代码如下，由于 Deepseek 生成的答案有随机性，所以需要对其答案的正确性进行简单判断（这里是判断答案数量对不对）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="variable language_">self</span>.params.ANSWERS_PATH, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">	raw_answers = f.readlines() <span class="comment"># 每一行是一个题目</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(raw_answers) != <span class="variable language_">self</span>.params.n_questions :<span class="comment"># 检查答案数量是否等于题目数量</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;题目数量为&#123;&#125;,而答案数量为&#123;&#125;&quot;</span>.<span class="built_in">format</span>(<span class="variable language_">self</span>.params.n_questions, <span class="built_in">len</span>(raw_answers)))</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;答案有误&quot;</span>)</span><br><span class="line">	exit(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="http://xhan53373752.com/">XHan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/09/%E9%97%AE%E5%8D%B7%E6%98%9F%E8%87%AA%E5%8A%A8%E7%AD%94%E9%A2%98%E8%84%9A%E6%9C%AC/">http://example.com/2025/03/09/%E9%97%AE%E5%8D%B7%E6%98%9F%E8%87%AA%E5%8A%A8%E7%AD%94%E9%A2%98%E8%84%9A%E6%9C%AC/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">XHan</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE/">项目</a></div><div class="post-share"><div class="social-share" data-image="/img/icon.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/03/09/%E5%9B%9B%E4%B8%AA%E5%90%91%E9%87%8F%E5%AD%90%E7%A9%BA%E9%97%B4/" title="四个向量子空间"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">四个向量子空间</div></div><div class="info-2"><div class="info-item-1">基可以线性表示一个空间内的所有向量，可以体现空间的维度 基必须是线性无关的 什么是线性无关？为什么要线性无关？ 假如二维空间有这样一组向量：  那么显然，这两组向量并不能表示二维空间的所有向量，它只能表示一维空间 同理，如果三维空间要能够表示三维内的所有向量，第三个向量就不能在前两个向量构成的平面内，否则也会丢失一个维度 二维空间内两向量共线可以表示为：$a_1=\lambda a_2$ 三维空间第三个向量在前两个向量的平面内可以表示为：$a_3=\lambda_1 a_1+\lambda_2 a_2$ 向量组线性无关可以理解为任何一个向量都不能被其余向量线性表示，反之则为线性相关 向量的基可以表示一个空间的所有向量，体现空间维度，我们要讨论某个空间其实就是找出这个空间的基，由于基要求是线性无关的，所以先要讨论空间向量之间的线性相关性，如果有一个向量能够被其他向量表示，它就是多余的，不能作为基 列空间 (Column...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/02/09/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BABlog/" title="Hexo搭建个人Blog"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-09</div><div class="info-item-2">Hexo搭建个人Blog</div></div><div class="info-2"><div class="info-item-1">前置知识：  有 Github 账号 使用过 git  1 配置 Github SSH 登录配置 SSH key 是为了能够远程登录到 Github，公钥登录就省去了输入密码的步骤，所以我们选择公钥授权 1.1 获取本机公钥输入如下命令后，连敲四下回车，会生成秘钥 id_rsa 和公钥 id_rsa.pub. 1ssh-keygen -t rsa 获取公钥内容 123cd ~/.ssh lscat id_rsa.pub 将返回的内容复制下来 1.2 配置 Github SSH key按下图操作：        完成后点绿色按钮 1.3 验证是否正确配置 SSH key输入 1ssh -T git@github.com 正常则会返回： 12345The authenticity of host &#x27;[ssh.github.com]:443 ([20.205.243.160]:443)&#x27; can&#x27;t be established.ED25519 key fingerprint is...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%96%B9%E6%B3%95-1%EF%BC%9A%E5%9F%BA%E4%BA%8E%E9%80%BB%E8%BE%91%E5%88%A4%E6%96%AD"><span class="toc-text">1 方法 1：基于逻辑判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E7%BD%91%E9%A1%B5%E4%BA%A4%E4%BA%92%E9%83%A8%E5%88%86"><span class="toc-text">1.1 网页交互部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%BC%82%E6%AD%A5%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">同步模式与异步模式的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">同步模式使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E9%A1%B5%E9%9D%A2%E5%85%83%E7%B4%A0"><span class="toc-text">提取页面元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%82%B9%E5%87%BB%E9%80%89%E9%A1%B9"><span class="toc-text">点击选项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%89%E9%92%AE%E9%AA%8C%E8%AF%81"><span class="toc-text">按钮验证</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E6%B1%82%E8%A7%A3%E9%83%A8%E5%88%86"><span class="toc-text">1.2 求解部分</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%96%B9%E6%B3%95-2%EF%BC%9A%E5%9F%BA%E4%BA%8E-deepseek"><span class="toc-text">2 方法 2：基于 deepseek</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(/img/winter_house.png);"><div id="footer-wrap"><div class="copyright">&copy;2025 By XHan</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
